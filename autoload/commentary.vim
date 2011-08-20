@@ -32,21 +32,26 @@ fun! commentary#CommentLineRange(lnum1, lnum2, action, ...)
     let action = "uncomment"
     for lnum in range(lnum1,lnum2)
       let line = matchstr(getline(lnum),'\S.*\s\@<!')
-      if line != '' && (stridx(line,before) || line[strlen(line)-strlen(after) : -1] != after)
+      if line !~ '^\s*$' && (stridx(line,before) || line[strlen(line)-strlen(after) : -1] != after)
         let action = "comment"
       endif
     endfor
   endif
 
   for lnum in range(lnum1,lnum2)
+    let line = getline(lnum)
+
     if action == "uncomment"
       let ec = '/\"'
       " comment: drop before and after. if before is followed by space drop
       " that as well
       let line = substitute(getline(lnum),'^\(\s*\)'.escape(before, ec).' \?\(.*\)'.escape(after,ec).'\s*$','\1\2','')
     else
-      let line = before.' '.getline(lnum).after
+      if line !~ '^\s*$'
+        let line = before.' '.getline(lnum).after
+      endif
     endif
+
     call setline(lnum,line)
   endfor
 
