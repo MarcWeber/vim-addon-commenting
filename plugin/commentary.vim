@@ -3,10 +3,9 @@
 " Version:      1.0
 " GetLatestVimScripts: 3695 1 :AutoInstall: commentary.vim
 
-if exists("g:loaded_commentary") || &cp || v:version < 700
-  finish
-endif
-let g:loaded_commentary = 1
+" vam#DefineAndBind('g:commentary','s:c','{}')
+if !exists('s:c') | let s:c = {} | endif | let g:commentary = s:c
+let s:c['default_options'] = function('commentary#DefaultOptions')
 
 " visual/selection mode:
 xnoremap <silent> \\  :<C-U>call commentary#CommentLineRange(line("'<"), line("'>"), 'auto')<CR>

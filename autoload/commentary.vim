@@ -4,14 +4,31 @@
 " GetLatestVimScripts: 3695 1 :AutoInstall: commentary.vim
 
 
-function! commentary#CommentLineRange(lnum1, lnum2, action)
+" must return: { 'mode': MODE, 'comment_strings': CS }
+" MODE: one of 'auto|comment|uncomment'
+" CS: [start,end], end may be ""
+function! commentary#DefaultOptions()
+  let o = { 'comment_strings':split(&commentstring,"%s",1) }
+  for c in split(&comments,',')
+    if c[0] == ':'
+      " if item starts by : we've probably found a line comment. Prefer this
+      let o.comment_strings = [c[1:], '']
+    endif
+  endfor
+  return o
+endfunction
+
+
+" fun: function returning comments to be used
+function! commentary#CommentLineRange(lnum1, lnum2, action, ...)
+  let opts = a:0 > 0 ? a:1 : commentary#DefaultOptions()
+
   let lnum1 = a:lnum1
   let lnum2 = a:lnum2
   let action = a:action
 
-
+  let [before, after] = opts.comment_strings
   if action == "auto"
-    let [before, after] = split(&commentstring,"%s",1)
     let action = "uncomment"
     for lnum in range(lnum1,lnum2)
       let line = matchstr(getline(lnum),'\S.*\s\@<!')
@@ -25,7 +42,7 @@ function! commentary#CommentLineRange(lnum1, lnum2, action)
     if action == "uncomment"
       let line = substitute(getline(lnum),'\S.*\s\@<!','\=submatch(0)[strlen(before):-strlen(after)-1]','')
     else
-      let line = substitute(getline(lnum),'\S.*\s\@<!','\=printf(&commentstring,submatch(0))','')
+      let line = substitute(getline(lnum),'\S.*\s\@<!','\=printf(before."%s".after,submatch(0))','')
     endif
     call setline(lnum,line)
   endfor
@@ -33,5 +50,5 @@ function! commentary#CommentLineRange(lnum1, lnum2, action)
 endfunction
 
 function commentary#GoMove(dummy)
-    call commentary#CommentLineRange(line("'["), line("']"))
+    call commentary#CommentLineRange(line("'["), line("']"), 'auto')
 endfunction
