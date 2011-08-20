@@ -7,7 +7,7 @@
 " must return: { 'mode': MODE, 'comment_strings': CS }
 " MODE: one of 'auto|comment|uncomment'
 " CS: [start,end], end may be ""
-function! commentary#DefaultOptions()
+fun! commentary#DefaultOptions()
   let o = { 'comment_strings':split(&commentstring,"%s",1) }
   for c in split(&comments,',')
     if c[0] == ':'
@@ -16,11 +16,11 @@ function! commentary#DefaultOptions()
     endif
   endfor
   return o
-endfunction
+endfun
 
 
-" fun: function returning comments to be used
-function! commentary#CommentLineRange(lnum1, lnum2, action, ...)
+" fun: fun returning comments to be used
+fun! commentary#CommentLineRange(lnum1, lnum2, action, ...)
   let opts = a:0 > 0 ? a:1 : commentary#DefaultOptions()
 
   let lnum1 = a:lnum1
@@ -40,15 +40,18 @@ function! commentary#CommentLineRange(lnum1, lnum2, action, ...)
 
   for lnum in range(lnum1,lnum2)
     if action == "uncomment"
-      let line = substitute(getline(lnum),'\S.*\s\@<!','\=submatch(0)[strlen(before):-strlen(after)-1]','')
+      let ec = '/\"'
+      " comment: drop before and after. if before is followed by space drop
+      " that as well
+      let line = substitute(getline(lnum),'^\(\s*\)'.escape(before, ec).' \?\(.*\)'.escape(after,ec).'\s*$','\1\2','')
     else
-      let line = substitute(getline(lnum),'\S.*\s\@<!','\=printf(before."%s".after,submatch(0))','')
+      let line = before.' '.getline(lnum).after
     endif
     call setline(lnum,line)
   endfor
 
-endfunction
+endfun
 
-function commentary#GoMove(dummy)
+fun! commentary#GoMove(dummy)
     call commentary#CommentLineRange(line("'["), line("']"), 'auto')
-endfunction
+endfun
