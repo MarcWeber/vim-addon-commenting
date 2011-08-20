@@ -3,14 +3,11 @@
 " Version:      1.0
 " GetLatestVimScripts: 3695 1 :AutoInstall: commentary.vim
 
-function! commentary#Go(type)
-  if a:type =~ '^\d\+$'
-    let [lnum1, lnum2] = [line("."), line(".") + a:type - 1]
-  elseif a:type =~ '^.$'
-    let [lnum1, lnum2] = [line("'<"), line("'>")]
-  else
-    let [lnum1, lnum2] = [line("'["), line("']")]
-  endif
+
+function! commentary#CommentLineRange(lnum1, lnum2)
+  let lnum1 = a:lnum1
+  let lnum2 = a:lnum2
+
 
   let [before, after] = split(&commentstring,"%s",1)
   let uncomment = 1
@@ -30,7 +27,8 @@ function! commentary#Go(type)
     call setline(lnum,line)
   endfor
 
-  if a:type =~ '^\d\+$'
-    silent! call repeat#set('\\\',a:type)
-  endif
+endfunction
+
+function commentary#GoMove(dummy)
+    call commentary#CommentLineRange(line("'["), line("']"))
 endfunction

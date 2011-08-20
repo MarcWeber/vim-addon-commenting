@@ -8,8 +8,13 @@ if exists("g:loaded_commentary") || &cp || v:version < 700
 endif
 let g:loaded_commentary = 1
 
-xnoremap <silent> \\  :<C-U>call commentary#Go(visualmode())<CR>
-nnoremap <silent> \\  :<C-U>set opfunc=commentary#Go<CR>g@
-nnoremap <silent> \\\ :<C-U>call commentary#Go(v:count1)<CR>
+" visual/selection mode:
+xnoremap <silent> \\  :<C-U>call commentary#CommentLineRange(line("'<"), line("'>"))<CR>
+" movement \\
+nnoremap <silent> \\  :<C-U>set opfunc=commentary#GoMove<CR>g@
+" n\\\ will comment n lines. Having repeat#set will allow you repeating this
+" \\\ action with . Not having it will show an error which doesn't hurt much
+nnoremap <silent> \\\ :<C-U>call commentary#CommentLineRange(line("."), line(".") + v:count1 - 1)
+                      \ <bar>call repeat#set('\\\',v:count1)<CR>
 
 " vim:set sw=2 sts=2:
