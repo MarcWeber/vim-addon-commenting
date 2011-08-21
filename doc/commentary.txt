@@ -1,10 +1,8 @@
 *commentary.txt*  Comment stuff out
 
-Author:  Tim Pope <http://tpo.pe/>
+manitainer: Marc Weber <marco-oweberNOSPAM@gmx.de>
+original Author:  Tim Pope <http://tpo.pe/>
 License: Same terms as Vim itself (see |license|)
-
-Comment stuff out.  Then uncomment it later.  Relies on 'commentstring' to be
-correctly set.
 
                                                 *\\*
 \\{motion}              Comment or uncomment lines that {motion} moves over.

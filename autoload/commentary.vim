@@ -1,7 +1,5 @@
-" commentary.vim - Comment stuff out
-" Maintainer:   Tim Pope <http://tpo.pe/>
-" Version:      1.0
-" GetLatestVimScripts: 3695 1 :AutoInstall: commentary.vim
+" Maintainer:   Marc Weber <marco-oweberNOSPAM@gmx.de>
+" original auhtor: Tim Pope
 
 " vam#DefineAndBind('g:commentary','s:c','{}')
 if !exists('s:c') | let s:c = {} | endif | let g:commentary = s:c
