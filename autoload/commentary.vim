@@ -3,11 +3,14 @@
 " Version:      1.0
 " GetLatestVimScripts: 3695 1 :AutoInstall: commentary.vim
 
+" vam#DefineAndBind('g:commentary','s:c','{}')
+if !exists('s:c') | let s:c = {} | endif | let g:commentary = s:c
+let s:c['default_options'] = function('commentary#DefaultOptions')
 
 " must return: { 'mode': MODE, 'comment_strings': CS }
 " MODE: one of 'auto|comment|uncomment'
 " CS: [start,end], end may be ""
-fun! commentary#DefaultOptions()
+fun! commentary#DefaultOptions() abort
   let o = { 'comment_strings':split(&commentstring,"%s",1) }
   for c in split(&comments,',')
     if c[0] == ':'
@@ -20,8 +23,8 @@ endfun
 
 
 " fun: fun returning comments to be used
-fun! commentary#CommentLineRange(lnum1, lnum2, action, ...)
-  let opts = a:0 > 0 ? a:1 : commentary#DefaultOptions()
+fun! commentary#CommentLineRange(lnum1, lnum2, action, ...) abort
+  let opts = a:0 > 0 ? a:1 : call(s:c['default_options'],[])
 
   let lnum1 = a:lnum1
   let lnum2 = a:lnum2
