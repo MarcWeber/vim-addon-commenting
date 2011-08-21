@@ -20,7 +20,7 @@ configuration:
 --------------
 
     " Force commenting styles:
-    let g:vim_addon_commenting = {'force_filetype_comments' = {'php': ['#',''], 'c' : ['/*','*/']}}
+    let g:vim_addon_commenting = {'force_filetype_comments': {'php': ['#',''], 'c' : ['/*','*/']}}
 
 why fork?
 ---------

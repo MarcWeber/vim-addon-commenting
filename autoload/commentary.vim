@@ -2,15 +2,20 @@
 " original auhtor: Tim Pope
 
 " vam#DefineAndBind('g:vim_addon_commenting','s:c','{}')
-if !exists('s:c') | let s:c = {} | endif | let g:vim_addon_commenting = s:c
+if !exists('g:vim_addon_commenting') | let g:vim_addon_commenting = {} | endif | let s:c = g:vim_addon_commenting
 let s:c['default_options'] = function('commentary#DefaultOptions')
-let s:c['force_filetype_comments'] = get(s:c, 'force_filetype_comments', '{}')
+let s:c['force_filetype_comments'] = get(s:c, 'force_filetype_comments', {})
 
 
 " must return: { 'mode': MODE, 'comment_strings': CS }
 " MODE: one of 'auto|comment|uncomment'
 " CS: [start,end], end may be ""
 fun! commentary#DefaultOptions() abort
+
+  let force = get(s:c.force_filetype_comments, &filetype, [])
+  if force != [] | return {'comment_strings':force} | endif
+  
+
   " fallback to comment_strings but search in comments for the shortest single
   " line comment
   let o = { 'comment_strings':split(&commentstring,"%s",1) }
@@ -54,7 +59,7 @@ fun! commentary#CommentLineRange(lnum1, lnum2, action, ...) abort
     let line = getline(lnum)
 
     if action == "uncomment"
-      let ec = '/\"'
+      let ec = '/\*"'
       " comment: drop before and after. if before is followed by space drop
       " that as well
       let line = substitute(line,'^\(\s*\)'.escape(before, ec).' \?\(.*\)'.escape(after,ec).'\s*$','\1\2','')
