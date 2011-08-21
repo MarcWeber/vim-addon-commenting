@@ -1,5 +1,5 @@
-commentary.vim
-==============
+commentary.vim a simple commenting plugin (yet feature complete enough to be used)
+==================================================================================
 
 Comment stuff out.  Use `\\\` to comment out a line (takes a count),
 `\\` to comment out the target of a motion (for example, `\\ap` to
@@ -67,3 +67,10 @@ License
 -------
 
 Distributable under the same terms as Vim itself.  See `:help license`.
+
+
+TODO (Marc?)
+------------
+This is a simple plugin. Thus simplify documentation (drop duplictation even if
+this means telling people to open plugin/commentary.vim). Reading those
+comments should be enough.
