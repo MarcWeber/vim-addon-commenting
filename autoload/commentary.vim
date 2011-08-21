@@ -9,13 +9,17 @@ let s:c['default_options'] = function('commentary#DefaultOptions')
 " MODE: one of 'auto|comment|uncomment'
 " CS: [start,end], end may be ""
 fun! commentary#DefaultOptions() abort
+  " fallback to comment_strings but search in comments for the shortest single
+  " line comment
   let o = { 'comment_strings':split(&commentstring,"%s",1) }
   for c in split(&comments,',')
-    if c[0] == ':'
+    let cs = matchstr(c, ':\zs.*')
+    if c =~ '^b\?:' && (!exists('first_only') ||  len(cs) < len(first_only))
       " if item starts by : we've probably found a line comment. Prefer this
-      let o.comment_strings = [c[1:], '']
+      let first_only = cs
     endif
   endfor
+  if exists('first_only') | let o.comment_strings = [first_only, ''] | endif
   return o
 endfun
 
