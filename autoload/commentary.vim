@@ -38,6 +38,11 @@ fun! commentary#CommentLineRange(lnum1, lnum2, action, ...)
     endfor
   endif
 
+  if action == "comment"
+    " if cursor is at start of line add markers at indentation level
+    let beforeC = matchstr(strpart(getline('.'),0,col('.')-1), '^\s*')
+  endif
+
   for lnum in range(lnum1,lnum2)
     let line = getline(lnum)
 
@@ -45,10 +50,10 @@ fun! commentary#CommentLineRange(lnum1, lnum2, action, ...)
       let ec = '/\"'
       " comment: drop before and after. if before is followed by space drop
       " that as well
-      let line = substitute(getline(lnum),'^\(\s*\)'.escape(before, ec).' \?\(.*\)'.escape(after,ec).'\s*$','\1\2','')
+      let line = substitute(line,'^\(\s*\)'.escape(before, ec).' \?\(.*\)'.escape(after,ec).'\s*$','\1\2','')
     else
       if line !~ '^\s*$'
-        let line = before.' '.getline(lnum).after
+        let line = substitute(line,'^\('.beforeC.'\)\?\(.*\)', '\1'.before.' \2'.after, '')
       endif
     endif
 

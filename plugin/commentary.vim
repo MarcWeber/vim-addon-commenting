@@ -7,7 +7,8 @@
 if !exists('s:c') | let s:c = {} | endif | let g:commentary = s:c
 let s:c['default_options'] = function('commentary#DefaultOptions')
 
-" visual/selection mode:
+" visual/selection mode, use C-V to comment at cursor col (limited by
+" indentation of first current line)
 xnoremap <silent> \\  :<C-U>call commentary#CommentLineRange(line("'<"), line("'>"), 'auto')<CR>
 " movement \\
 nnoremap <silent> \\  :<C-U>set opfunc=commentary#GoMove<CR>g@
