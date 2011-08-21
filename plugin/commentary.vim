@@ -7,9 +7,11 @@
 if !exists('s:c') | let s:c = {} | endif | let g:commentary = s:c
 let s:c['default_options'] = function('commentary#DefaultOptions')
 
-" visual/selection mode, use C-V to comment at cursor col (limited by
-" indentation of first current line)
-xnoremap <silent> \\  :<C-U>call commentary#CommentLineRange(line("'<"), line("'>"), 'auto')<CR>
+" visual/selection mode commenting/uncommenting
+xnoremap <silent> \\  <c-v>:<C-U>call commentary#CommentLineRange(line("'<"), line("'>"), 'auto')<CR>
+                    " ^ <c-v> makes vim return col('.') correctly. Then comments are inserted at col
+                    " of cursor (or first non whitespace char)
+
 " movement \\
 nnoremap <silent> \\  :<C-U>set opfunc=commentary#GoMove<CR>g@
 " n\\\ will comment n lines. Having repeat#set will allow you repeating this
