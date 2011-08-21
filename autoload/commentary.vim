@@ -1,9 +1,11 @@
 " Maintainer:   Marc Weber <marco-oweberNOSPAM@gmx.de>
 " original auhtor: Tim Pope
 
-" vam#DefineAndBind('g:commentary','s:c','{}')
-if !exists('s:c') | let s:c = {} | endif | let g:commentary = s:c
+" vam#DefineAndBind('g:vim_addon_commenting','s:c','{}')
+if !exists('s:c') | let s:c = {} | endif | let g:vim_addon_commenting = s:c
 let s:c['default_options'] = function('commentary#DefaultOptions')
+let s:c['force_filetype_comments'] = get(s:c, 'force_filetype_comments', '{}')
+
 
 " must return: { 'mode': MODE, 'comment_strings': CS }
 " MODE: one of 'auto|comment|uncomment'

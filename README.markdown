@@ -16,6 +16,12 @@ which magically even supports commenting JS within PHP code and such.
 Installing [repeat.vim](https://github.com/tpope/vim-repeat) will enable 
 you to use . to repeat a commenting action
 
+configuration:
+--------------
+
+    " Force commenting styles:
+    let g:vim_addon_commenting = {'force_filetype_comments' = {'php': ['#',''], 'c' : ['/*','*/']}}
+
 why fork?
 ---------
 based on https://github.com/tpope/commentary
