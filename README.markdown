@@ -24,7 +24,7 @@ configuration:
 
 why fork?
 ---------
-based on https://github.com/tpope/commentary
+based on https://github.com/tpope/vim-commentary
 
 Because tpope told me: "cursor indentation level I think is a no, at this point".
 Whenever he changes his mind I'll be ready to merge.
@@ -34,6 +34,9 @@ related work
 See www.vim.org/search.php .. There are many existing plugins. But I feel that
 they are hard to support because most of them have many hundreds of lines or
 are lacking features I want
+
+Eg a very complete commenting implementation also supporting nested file types is
+[tcomment](https://github.com/tomtom/tcomment_vim)
 
 License
 -------
